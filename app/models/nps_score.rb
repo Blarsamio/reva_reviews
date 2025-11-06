@@ -1,0 +1,2 @@
+class NpsScore < ApplicationRecord
+end
