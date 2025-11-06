@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_name: MyString
+  channel: MyString
+  rating: 1
+  review_date: 2025-11-06
+  title: MyString
+  description: MyText
+  fingerprint: MyString
+
+two:
+  company_name: MyString
+  channel: MyString
+  rating: 1
+  review_date: 2025-11-06
+  title: MyString
+  description: MyText
+  fingerprint: MyString
