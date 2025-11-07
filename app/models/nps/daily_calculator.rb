@@ -9,7 +9,7 @@ class Nps::DailyCalculator
                       .distinct
                       .pluck(:company_name)
     results = []
-    # adding to results those with company names and w/o
+    # adding to results globals and per company
     
     results << Nps::Calculator.new(date: @date, company: nil).calculate
     companies.each do |c|
