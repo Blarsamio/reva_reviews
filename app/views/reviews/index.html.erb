@@ -1,10 +1,25 @@
-<div class="p-8">
-  <h1 class="font-bold text-4xl mb-4">Reviews</h1>
-  <% @reviews.each do |r| %>
-    <p class="text-gray-600"><%= r.company_name %></p>
-  <% end %>
-  <p class="text-gray-600">Total reviews: <%= @reviews.count %></p>
-</div>
-<div class="mt-4">
-  <%== pagy_nav(@pagy) %>
+<div class="max-w-4xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-6">Reviews</h1>
+
+  <div class="space-y-4">
+    <% @reviews.each do |review| %>
+      <div class="border border-gray-200 rounded-lg p-6 bg-gray-100 shadow-sm">
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="text-lg font-semibold text-gray-900">
+            <%= review.company_name %>
+          </h3>
+          <span class="text-sm font-medium text-gray-600"><%= review.rating %>/5</span>
+        </div>
+        <div class="flex gap-4 text-sm text-gray-500 mb-3">
+          <span><%= review.channel %></span>
+          <span><%= review.review_date %></span>
+        </div>
+        <p class="text-gray-700 text-sm"><%= review.description %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-6">
+    <%== pagy_nav(@pagy) %>
+  </div>
 </div>
