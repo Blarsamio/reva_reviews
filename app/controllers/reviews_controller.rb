@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
   def index
-    @reviews = Review.all
+    @pagy, @reviews = pagy(Review.all) 
   end
 end
