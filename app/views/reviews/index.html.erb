@@ -1,5 +1,8 @@
-<div class="max-w-4xl mx-auto p-8">
-  <h1 class="text-3xl font-bold mb-6">Reviews</h1>
+<div class="max-w-6xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-6">Reviews Dashboard</h1>
+
+  <%= render 'nps_dashboard' %>
+
   <%= render 'filters' %>
 
   <%= turbo_frame_tag "reviews" do %>
