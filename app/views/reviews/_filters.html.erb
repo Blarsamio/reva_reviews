@@ -9,7 +9,9 @@
 
   <div data-filter-target="panel" class="hidden">
     <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-      <%= form_with url: reviews_path, method: :get, class: "space-y-6" do |f| %>
+      <%= form_with url: reviews_path, method: :get,
+                                      data: { turbo_frame: "reviews", turbo_action: "advance" },
+                                      class: "space-y-6" do |f| %>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-4">

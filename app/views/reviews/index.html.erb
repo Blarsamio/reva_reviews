@@ -2,6 +2,7 @@
   <h1 class="text-3xl font-bold mb-6">Reviews</h1>
   <%= render 'filters' %>
 
+  <%= turbo_frame_tag "reviews" do %>
   <div class="space-y-4">
     <% @reviews.each do |review| %>
       <div class="border border-gray-200 rounded-lg p-6 bg-gray-100 shadow-sm">
@@ -23,4 +24,5 @@
   <div class="mt-6">
     <%== pagy_nav(@pagy) %>
   </div>
+  <% end %>
 </div>
