@@ -1,12 +1,12 @@
 <% if @global_nps %>
   <div class="bg-white rounded-lg p-8 mb-8 shadow-sm">
-    <% total_reviews = @global_nps.promoter_count + @global_nps.passive_count + @global_nps.detractor_count %>
+    <% total_reviews = nps_total_count(@global_nps) %>
     <div class="text-center mb-8">
       <h2 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-3">Yesterday's Net Promoter Score</h2>
-      <% if total_reviews.positive? %>
+      <% if nps_has_data?(@global_nps) %>
         <div class="flex items-center justify-center gap-4">
-          <div class="text-7xl font-bold <%= @global_nps.score >= 50 ? 'text-green-600' : @global_nps.score >= 0 ? 'text-yellow-600' : 'text-red-600' %>">
-            <%= @global_nps.score > 0 ? '+' : '' %><%= @global_nps.score %>
+          <div class="text-7xl font-bold <%= nps_color_class(@global_nps.score) %>">
+            <%= format_nps_score(@global_nps.score) %>
           </div>
         </div>
       <% else %>
@@ -15,18 +15,10 @@
           <p class="text-lg font-semibold text-gray-500">No score generated</p>
         </div>
       <% end %>
-      <% if total_reviews.positive? %>
-        <% if @global_nps.score >= 70 %>
-          <p class="text-lg font-semibold text-green-600 mt-2">Excellent</p>
-        <% elsif @global_nps.score >= 50 %>
-          <p class="text-lg font-semibold text-green-600 mt-2">Great</p>
-        <% elsif @global_nps.score >= 30 %>
-          <p class="text-lg font-semibold text-yellow-600 mt-2">Good</p>
-        <% elsif @global_nps.score >= 0 %>
-          <p class="text-lg font-semibold text-yellow-600 mt-2">Fair</p>
-        <% else %>
-          <p class="text-lg font-semibold text-red-600 mt-2">Needs Improvement</p>
-        <% end %>
+      <% if nps_has_data?(@global_nps) %>
+        <p class="text-lg font-semibold <%= nps_label_color_class(@global_nps.score) %> mt-2">
+          <%= nps_label(@global_nps.score) %>
+        </p>
       <% end %>
       <p class="text-sm text-gray-600 mt-3">
         <% if total_reviews.positive? %>
@@ -38,11 +30,10 @@
     </div>
 
     <!-- nps -->
-    <% total = total_reviews %>
-    <% if total > 0 %>
-      <% promoter = (@global_nps.promoter_count.to_f / total * 100).round %>
-      <% passive = (@global_nps.passive_count.to_f / total * 100).round %>
-      <% detractor = (@global_nps.detractor_count.to_f / total * 100).round %>
+    <% if nps_has_data?(@global_nps) %>
+      <% promoter = format_percentage(@global_nps.promoter_count, total_reviews) %>
+      <% passive = format_percentage(@global_nps.passive_count, total_reviews) %>
+      <% detractor = format_percentage(@global_nps.detractor_count, total_reviews) %>
 
       <div class="mb-6">
         <div class="flex h-8 rounded-full overflow-hidden shadow-inner" role="group" aria-label="NPS Distribution">
