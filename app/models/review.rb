@@ -1,6 +1,7 @@
 class Review < ApplicationRecord
   include Searchable
   include Filterable
+  include Importable
   before_validation :generate_fingerprint
 
   # keeeping NPS logic here since it's core domain behavior
