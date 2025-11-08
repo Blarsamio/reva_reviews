@@ -2,8 +2,7 @@ class ReviewsController < ApplicationController
   def index
     @pagy, @reviews = pagy(Review.filtered(filter_params))
     @channels = Review.all.pluck(:channel).uniq
-    date = Date.new(2025, 02, 03)
-    nps_loader = Nps::ScoreLoader.new(date)
+    nps_loader = Nps::ScoreLoader.new(Date.yesterday)
     @global_nps = nps_loader.global_score
     @company_nps = nps_loader.company_scores
   end

@@ -1,38 +1,66 @@
 <% if @global_nps %>
   <div class="bg-white rounded-lg p-8 mb-8 shadow-sm">
+    <% total_reviews = @global_nps.promoter_count + @global_nps.passive_count + @global_nps.detractor_count %>
     <div class="text-center mb-8">
       <h2 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-3">Yesterday's Net Promoter Score</h2>
-      <div class="flex items-center justify-center gap-4">
-        <div class="text-7xl font-bold <%= @global_nps.score >= 50 ? 'text-green-300' : @global_nps.score >= 0 ? 'text-blue-300' : 'text-red-300' %>">
-          <%= @global_nps.score > 0 ? '+' : '' %><%= @global_nps.score %>
+      <% if total_reviews.positive? %>
+        <div class="flex items-center justify-center gap-4">
+          <div class="text-7xl font-bold <%= @global_nps.score >= 50 ? 'text-green-600' : @global_nps.score >= 0 ? 'text-yellow-600' : 'text-red-600' %>">
+            <%= @global_nps.score > 0 ? '+' : '' %><%= @global_nps.score %>
+          </div>
         </div>
-      </div>
+      <% else %>
+        <div class="flex flex-col items-center justify-center gap-2 py-6">
+          <span class="text-6xl font-semibold text-gray-300">—</span>
+          <p class="text-lg font-semibold text-gray-500">No score generated</p>
+        </div>
+      <% end %>
+      <% if total_reviews.positive? %>
+        <% if @global_nps.score >= 70 %>
+          <p class="text-lg font-semibold text-green-600 mt-2">Excellent</p>
+        <% elsif @global_nps.score >= 50 %>
+          <p class="text-lg font-semibold text-green-600 mt-2">Great</p>
+        <% elsif @global_nps.score >= 30 %>
+          <p class="text-lg font-semibold text-yellow-600 mt-2">Good</p>
+        <% elsif @global_nps.score >= 0 %>
+          <p class="text-lg font-semibold text-yellow-600 mt-2">Fair</p>
+        <% else %>
+          <p class="text-lg font-semibold text-red-600 mt-2">Needs Improvement</p>
+        <% end %>
+      <% end %>
       <p class="text-sm text-gray-600 mt-3">
-        Based on <span class="font-semibold"><%= @global_nps.promoter_count + @global_nps.passive_count + @global_nps.detractor_count %></span> reviews from <%= Date.yesterday.strftime('%B %d, %Y') %>
+        <% if total_reviews.positive? %>
+          Based on <span class="font-semibold"><%= total_reviews %></span> reviews from <%= Date.yesterday.strftime('%B %d, %Y') %>
+        <% else %>
+          No reviews from <%= Date.yesterday.strftime('%B %d, %Y') %>
+        <% end %>
       </p>
     </div>
 
     <!-- nps -->
-    <% total = @global_nps.promoter_count + @global_nps.passive_count + @global_nps.detractor_count %>
+    <% total = total_reviews %>
     <% if total > 0 %>
-      <% promoter = (@global_nps.promoter_count.to_f / total * 100).round(1) %>
-      <% passive = (@global_nps.passive_count.to_f / total * 100).round(1) %>
-      <% detractor = (@global_nps.detractor_count.to_f / total * 100).round(1) %>
+      <% promoter = (@global_nps.promoter_count.to_f / total * 100).round %>
+      <% passive = (@global_nps.passive_count.to_f / total * 100).round %>
+      <% detractor = (@global_nps.detractor_count.to_f / total * 100).round %>
 
       <div class="mb-6">
-        <div class="flex h-8 rounded-full overflow-hidden shadow-inner">
-          <div class="bg-green-300 flex items-center justify-center text-white text-xs font-semibold"
+        <div class="flex h-8 rounded-full overflow-hidden shadow-inner" role="group" aria-label="NPS Distribution">
+          <div class="bg-green-100 flex items-center justify-center text-green-600 text-xs font-semibold"
                style="width: <%= promoter %>%"
+               role="progressbar"
                title="Promoters: <%= promoter %>%">
             <% if promoter > 10 %><%= promoter.to_i %>%<% end %>
           </div>
-          <div class="bg-yellow-300 flex items-center justify-center text-gray-800 text-xs font-semibold"
+          <div class="bg-yellow-100 flex items-center justify-center text-yellow-600 text-xs font-semibold"
                style="width: <%= passive %>%"
+               role="progressbar"
                title="Passives: <%= passive %>%">
             <% if passive > 10 %><%= passive.to_i %>%<% end %>
           </div>
-          <div class="bg-red-300 flex items-center justify-center text-white text-xs font-semibold"
+          <div class="bg-red-100 flex items-center justify-center text-red-600 text-xs font-semibold"
                style="width: <%= detractor %>%"
+               role="progressbar"
                title="Detractors: <%= detractor %>%">
             <% if detractor > 10 %><%= detractor.to_i %>%<% end %>
           </div>
@@ -42,31 +70,31 @@
       <!-- cards -->
       <div class="grid grid-cols-3 gap-4 mb-8">
         <!-- promoters -->
-        <div class="bg-green-100 rounded-lg p-4">
+        <div class="bg-green-100 rounded-lg p-4 shadow-sm">
           <div class="flex items-center justify-end mb-2">
-            <span class="text-xs self-end font-semibold text-green-700 bg-green-100 px-2 py-1 rounded">Promoters</span>
+            <span class="text-sm self-end font-semibold text-green-600 px-2 py-1 rounded">Promoters</span>
           </div>
-          <div class="text-3xl font-bold text-green-600 mb-1"><%= @global_nps.promoter_count %></div>
+          <div class="text-4xl font-bold text-green-600 mb-1"><%= @global_nps.promoter_count %></div>
           <div class="text-sm text-gray-600"><%= promoter %>% of reviews</div>
           <div class="text-xs text-gray-500 mt-2">5-star ratings</div>
         </div>
 
         <!-- passives -->
-        <div class="bg-yellow-100 rounded-lg p-4">
+        <div class="bg-yellow-100 rounded-lg p-4 shadow-sm">
           <div class="flex items-center justify-end mb-2">
-            <span class="text-xs font-semibold text-yellow-700 bg-yellow-100 px-2 py-1 rounded">Passives</span>
+            <span class="text-sm font-semibold text-yellow-600 px-2 py-1 rounded">Passives</span>
           </div>
-          <div class="text-3xl font-bold text-yellow-600 mb-1"><%= @global_nps.passive_count %></div>
+          <div class="text-4xl font-bold text-yellow-600 mb-1"><%= @global_nps.passive_count %></div>
           <div class="text-sm text-gray-600"><%= passive %>% of reviews</div>
           <div class="text-xs text-gray-500 mt-2">4-star ratings</div>
         </div>
 
         <!-- detractors -->
-        <div class="bg-red-100 rounded-lg p-4">
+        <div class="bg-red-100 rounded-lg p-4 shadow-sm">
           <div class="flex items-center justify-end mb-2">
-            <span class="text-xs font-semibold text-red-700 bg-red-100 px-2 py-1 rounded">Detractors</span>
+            <span class="text-sm font-semibold text-red-600 px-2 py-1 rounded">Detractors</span>
           </div>
-          <div class="text-3xl font-bold text-red-600 mb-1"><%= @global_nps.detractor_count %></div>
+          <div class="text-4xl font-bold text-red-600 mb-1"><%= @global_nps.detractor_count %></div>
           <div class="text-sm text-gray-600"><%= detractor %>% of reviews</div>
           <div class="text-xs text-gray-500 mt-2">1-3 star ratings</div>
         </div>
