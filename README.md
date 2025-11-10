@@ -108,12 +108,13 @@ This is expected behavior due to fingerprint-based idempotency
 **CSV Format:**
 The CSV file should have the following columns:
 ```
-company_name,channel,rating,date,title,description
+company_name,date,rating,channel,title,description
 ```
 
 **Example CSV line:**
 ```
-"Acme Corp",iOS App,5,2024-01-15,"Great Service","Excellent experience with the app"
+"341 Parkway", 2024-10-26, 5, "Vrbo", "Great option for small group.	Great distance to our target area of the city.  No concerns with safety.  Easy, frequent, and fast communication with property manager.  Would definitely book again."
+
 ```
 
 **Field mapping:**
