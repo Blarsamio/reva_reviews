@@ -4,7 +4,7 @@ module Review::Filterable
   included do
     scope :by_rating, ->(ratings) { where(rating: ratings) if ratings.present? }
     scope :by_channel, ->(channels) { where(channel: channels) if channels.present? }
-    scope :by_company, -> (name) {where(company_name: name) if name.present? }
+    scope :by_company, -> (name) { where("company_name ILIKE ?", "%#{name}%") if name.present? }
     scope :by_date_range, ->(start_date, end_date) { where(review_date: start_date..end_date) if start_date.present? && end_date.present? }
   end
 

@@ -85,8 +85,8 @@ nav.pagy .current,
 .pagination .current,
 .pagy-nav span.current,
 nav.pagy-nav span.current {
-  background: #a78bfa !important;
-  border-color: #a78bfa !important;
+  background: oklch(78.5% .115 274.713) !important;
+  border-color: oklch(78.5% .115 274.713) !important;
   color: white !important;
   font-weight: 600;
 }
